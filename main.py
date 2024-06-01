@@ -21,6 +21,11 @@ def object_rotation(points, angle):
     return np.dot(rotation_matrix, points.T).T
 
 
+def object_scaling(points, scale):
+    scaling_matrix = np.array([[scale, 0], [0, scale]])
+    return np.dot(points, scaling_matrix)
+
+
 triangle = np.array([[0, 0], [1, 0], [0.2, 1], [0, 0]])
 trapezoid = np.array([[0, 0], [0, 1], [2, 1], [3, 0], [0, 0]])
 
@@ -29,3 +34,11 @@ plot_objects(trapezoid, trapezoid_rotated, 'Trapezoid', 'Rotated Trapezoid')
 
 triangle_rotated = object_rotation(triangle, 90)
 plot_objects(triangle, triangle_rotated, 'Triangle','Rotated Triangle')
+
+scale_factor = 2
+
+trapezoid_scaled = object_scaling(trapezoid, scale_factor)
+plot_objects(trapezoid, trapezoid_scaled, 'Trapezoid', f'Scaled Trapezoid (scale factor={scale_factor})')
+
+triangle_scaled = object_scaling(triangle, scale_factor)
+plot_objects(triangle, triangle_scaled, 'Triangle', f'Scaled Triangle (scale factor={scale_factor})')
