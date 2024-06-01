@@ -26,6 +26,14 @@ def object_scaling(points, scale):
     return np.dot(points, scaling_matrix)
 
 
+def object_axis_reflection(points, axis):
+    if axis == 'x':
+        reflection_matrix = np.array([[1, 0], [0, -1]])
+    else:
+        reflection_matrix = np.array([[-1, 0], [0, 1]])
+    return np.dot(points, reflection_matrix)
+
+
 triangle = np.array([[0, 0], [1, 0], [0.2, 1], [0, 0]])
 trapezoid = np.array([[0, 0], [0, 1], [2, 1], [3, 0], [0, 0]])
 
@@ -42,3 +50,15 @@ plot_objects(trapezoid, trapezoid_scaled, 'Trapezoid', f'Scaled Trapezoid (scale
 
 triangle_scaled = object_scaling(triangle, scale_factor)
 plot_objects(triangle, triangle_scaled, 'Triangle', f'Scaled Triangle (scale factor={scale_factor})')
+
+trapezoid_reflected_x = object_axis_reflection(trapezoid, 'x')
+plot_objects(trapezoid, trapezoid_reflected_x, 'Trapezoid', 'Reflected Trapezoid (X-axis)')
+
+triangle_reflected_x = object_axis_reflection(triangle, 'x')
+plot_objects(triangle, triangle_reflected_x, 'Triangle', 'Reflected Triangle (X-axis)')
+
+trapezoid_reflected_y = object_axis_reflection(trapezoid, 'y')
+plot_objects(trapezoid, trapezoid_reflected_y, 'Trapezoid', 'Reflected Trapezoid (Y-axis)')
+
+triangle_reflected_y = object_axis_reflection(triangle, 'y')
+plot_objects(triangle, triangle_reflected_y, 'Triangle', 'Reflected Triangle (Y-axis)')
