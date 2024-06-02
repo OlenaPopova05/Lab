@@ -16,6 +16,18 @@ def plot_objects(points1, points2, title1, title2):
     plt.show()
 
 
+def plot_objects_3d(points1, points2, title1, title2):
+    fig = plt.figure(figsize=(10, 5))
+    ax = fig.add_subplot(121, projection='3d')
+    ax.plot(points1[:, 0], points1[:, 1], points1[:, 2], marker='o')
+    plt.title(title1)
+    ax = fig.add_subplot(122, projection='3d')
+    ax.plot(points2[:, 0], points2[:, 1], points2[:, 2], marker='o')
+    plt.title(title2)
+    print(f"{title2}:\n {points2}")
+    plt.show()
+
+
 def object_rotation(points, angle):
     angle = np.radians(angle)
     rotation_matrix = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
@@ -45,6 +57,31 @@ def object_shear(points, shear_factor, axis):
 
 def custom_transformation(points, transformation_matrix):
     return np.dot(transformation_matrix, points.T).T
+
+
+pyramid = np.array([
+    [0, 0, 0],
+    [1, 0, 0],
+    [1, 1, 0],
+    [0, 1, 0],
+    [0, 0, 0],
+    [0.5, 0.5, 1],
+    [1, 0, 0],
+    [1, 1, 0],
+    [0.5, 0.5, 1],
+    [0, 1, 0],
+    [0, 0, 0],
+    [0.5, 0.5, 1]
+])
+
+pyramid_custom_transformed_1 = custom_transformation(pyramid, np.array([[2, 0, 0], [0, 2, 0], [0, 0, 2]]))
+plot_objects_3d(pyramid, pyramid_custom_transformed_1, 'Pyramid', 'Custom Transformed Pyramid 1')
+
+angle_3d = np.radians(45)
+pyramid_custom_transformed_2 = custom_transformation(pyramid, np.array([[np.cos(angle_3d), -np.sin(angle_3d), 0],
+                                                                        [np.sin(angle_3d), np.cos(angle_3d), 0],
+                                                                        [0, 0, 1]]))
+plot_objects_3d(pyramid, pyramid_custom_transformed_2, 'Pyramid', 'Custom Transformed Pyramid 2')
 
 
 triangle = np.array([[0, 0], [1, 0], [0.2, 1], [0, 0]])
