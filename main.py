@@ -12,6 +12,7 @@ def plot_objects(points1, points2, title1, title2):
     plt.plot(points2[:, 0], points2[:, 1], marker='o')
     plt.title(title2)
     plt.grid(True)
+    print(f"{title2}:\n {points2}")
     plt.show()
 
 
@@ -40,6 +41,10 @@ def object_shear(points, shear_factor, axis):
     else:
         shear_matrix = np.array([[1, 0], [shear_factor, 1]])
     return np.dot(shear_matrix, points.T).T
+
+
+def custom_transformation(points, transformation_matrix):
+    return np.dot(transformation_matrix, points.T).T
 
 
 triangle = np.array([[0, 0], [1, 0], [0.2, 1], [0, 0]])
@@ -84,3 +89,12 @@ plot_objects(trapezoid, trapezoid_sheared_y, 'Trapezoid', f'Sheared Trapezoid (Y
 
 triangle_sheared_y = object_shear(triangle, shear_factor, 'y')
 plot_objects(triangle, triangle_sheared_y, 'Triangle', f'Sheared Triangle (Y-axis, shear factor={shear_factor})')
+
+
+custom_transformation_matrix = np.array([[2, 0], [0, 2]])
+
+trapezoid_custom_transformed = custom_transformation(trapezoid, custom_transformation_matrix)
+plot_objects(trapezoid, trapezoid_custom_transformed, 'Trapezoid', 'Custom Transformed Trapezoid')
+
+triangle_custom_transformed = custom_transformation(triangle, custom_transformation_matrix)
+plot_objects(triangle, triangle_custom_transformed, 'Triangle', 'Custom Transformed Triangle')
