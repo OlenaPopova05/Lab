@@ -34,6 +34,14 @@ def object_axis_reflection(points, axis):
     return np.dot(points, reflection_matrix)
 
 
+def object_shear(points, shear_factor, axis):
+    if axis == 'x':
+        shear_matrix = np.array([[1, shear_factor], [0, 1]])
+    else:
+        shear_matrix = np.array([[1, 0], [shear_factor, 1]])
+    return np.dot(shear_matrix, points.T).T
+
+
 triangle = np.array([[0, 0], [1, 0], [0.2, 1], [0, 0]])
 trapezoid = np.array([[0, 0], [0, 1], [2, 1], [3, 0], [0, 0]])
 
@@ -62,3 +70,17 @@ plot_objects(trapezoid, trapezoid_reflected_y, 'Trapezoid', 'Reflected Trapezoid
 
 triangle_reflected_y = object_axis_reflection(triangle, 'y')
 plot_objects(triangle, triangle_reflected_y, 'Triangle', 'Reflected Triangle (Y-axis)')
+
+
+shear_factor = 2
+trapezoid_sheared_x = object_shear(trapezoid, shear_factor, 'x')
+plot_objects(trapezoid, trapezoid_sheared_x, 'Trapezoid', f'Sheared Trapezoid (X-axis, shear factor={shear_factor})')
+
+triangle_sheared_x = object_shear(triangle, shear_factor, 'x')
+plot_objects(triangle, triangle_sheared_x, 'Triangle', f'Sheared Triangle (X-axis, shear factor={shear_factor})')
+
+trapezoid_sheared_y = object_shear(trapezoid, shear_factor, 'y')
+plot_objects(trapezoid, trapezoid_sheared_y, 'Trapezoid', f'Sheared Trapezoid (Y-axis, shear factor={shear_factor})')
+
+triangle_sheared_y = object_shear(triangle, shear_factor, 'y')
+plot_objects(triangle, triangle_sheared_y, 'Triangle', f'Sheared Triangle (Y-axis, shear factor={shear_factor})')
