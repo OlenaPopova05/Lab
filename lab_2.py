@@ -78,3 +78,28 @@ def pca_image_compression(image_path):
 
 image_path = '/Users/olenapopova/Documents/GitHub/Lab_1/guinea pig копія.jpg'
 pca_image_compression(image_path)
+
+
+def encrypt_message(message, key_matrix):
+    message_vector = np.array([ord(char) for char in message])  # перетворення повідомлення в вектор числових значень (ASCII кодів символів)
+    eigenvalues, eigenvectors = np.linalg.eig(key_matrix)  # обчислення власних значень та власних векторів ключової матриці
+    diagonalized_key_matrix = np.dot(np.dot(eigenvectors, np.diag(eigenvalues)), np.linalg.inv(eigenvectors))  # створення діагоналізованої матриці ключа
+    encrypted_vector = np.dot(diagonalized_key_matrix, message_vector)  # шифрування вектору повідомлення
+    return encrypted_vector
+
+
+def decrypt_message(encrypted_vector, key_matrix):
+    assert key_matrix.shape[0] == key_matrix.shape[1]  # перевірка, що key_matrix є квадратною
+    key_matrix_inv = np.linalg.inv(key_matrix)  # обчислення оберненої матриці ключа
+    decrypted_vector = np.dot(key_matrix_inv, encrypted_vector)  # розшифрування вектора
+    decrypted_message = ''.join([chr(int(round(num.real))) for num in decrypted_vector])  # перетворення числового вектора в рядок (символи ASCII)
+    return decrypted_message
+
+
+original_message = "Hello, World!"
+key_matrix = np.random.randint(0, 256, (len(original_message), len(original_message)))
+encrypted_vector = encrypt_message(original_message, key_matrix)
+print("Original Message:", original_message)
+print("Encrypted Message:", encrypted_vector)
+decrypted_message = decrypt_message(encrypted_vector, key_matrix)
+print("Decrypted Message:", decrypted_message)
