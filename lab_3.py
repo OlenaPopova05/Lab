@@ -1,4 +1,7 @@
 import numpy as np
+import pandas as pd
+from scipy.sparse.linalg import svds
+import matplotlib.pyplot as plt
 
 
 def svd(matrix):
@@ -41,3 +44,43 @@ u, sigma, v = svd(matrix)
 print("U:\n", u)
 print("Sigma:\n", sigma)
 print("V:\n", v)
+
+file_path = 'ratings.csv'
+df = pd.read_csv(file_path)
+
+ratings_matrix = df.pivot(index='userId', columns='movieId', values='rating')
+
+ratings_matrix = ratings_matrix.dropna(thresh=200, axis=0)
+ratings_matrix = ratings_matrix.dropna(thresh=90, axis=1)
+
+ratings_matrix_filled = ratings_matrix.fillna(2.5)
+R = ratings_matrix_filled.values
+user_ratings_mean = np.mean(R, axis=1)
+R_demeaned = R - user_ratings_mean.reshape(-1, 1)
+
+U, sigma, Vt = svds(R_demeaned, k=3)
+
+print("U:\n", U)
+print("Sigma:\n", sigma)
+print("Vt:\n", Vt)
+
+num_users_to_plot = 20
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(U[:num_users_to_plot, 0], U[:num_users_to_plot, 1], U[:num_users_to_plot, 2])
+
+ax.set_title('Users')
+plt.show()
+
+V = Vt.T
+num_movies_to_plot = 20
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+for i in range(num_movies_to_plot):
+    ax.scatter(V[i, 0], V[i, 1], V[i, 2], label=f'Movie {i+1}')
+
+ax.set_title('Films')
+plt.show()
